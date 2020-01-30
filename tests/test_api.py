@@ -90,6 +90,7 @@ def test_document_common_methods(Sample):
 
   assert Sample.collection.find().count() == 0
   assert Sample.collection.find().count_documents({}) == 0
+  assert Sample.collection.find().estimated_document_count() == 0
 
   # Instanciate
   new_object = Sample({"name": "XXX", "url": "http://example.com"})
@@ -97,6 +98,7 @@ def test_document_common_methods(Sample):
   # Should not save to DB yet.
   assert Sample.collection.find().count() == 0
   assert Sample.collection.find().count_documents({}) == 0
+  assert Sample.collection.find().estimated_document_count() == 0
 
   # Now save()
   new_object.save()
@@ -109,6 +111,7 @@ def test_document_common_methods(Sample):
 
   assert Sample.collection.find().count() == 1
   assert Sample.collection.find().count_documents({}) == 1
+  assert Sample.collection.find().estimated_document_count() == 1
   db_object = Sample.collection.find_one()
   assert type(db_object) == dict
   assert db_object["name"] == "XXX"
@@ -119,6 +122,7 @@ def test_document_common_methods(Sample):
 
   assert Sample.collection.find().count() == 2
   assert Sample.collection.find().count_documents({}) == 2
+  assert Sample.collection.find().estimated_document_count() == 2
 
   # Find back with different methods
   orm_object = Sample.find_by_id(db_object["_id"])
@@ -173,12 +177,14 @@ def test_document_common_methods(Sample):
 
   assert Sample.collection.find().count() == 2
   assert Sample.collection.find().count_documents({}) == 2
+  assert Sample.collection.find().estimated_document_count() == 2
 
   # FIXME not anymore as we are requesting _id for each query
   # orm_object.save(force=True)
 
   # assert Sample.collection.find().count() == 3
   # assert Sample.collection.find().count_documents({}) == 3
+  # assert Sample.collection.find().estimated_document_count() == 3
 
   orm_object = Sample.find_by_id(db_object["_id"], fields=["url", "_id"])
   assert dict(orm_object) == {"url": "http://example.com", "_id": db_object["_id"]}
@@ -193,6 +199,7 @@ def test_document_common_methods(Sample):
 
   assert Sample.collection.find().count() == 2
   assert Sample.collection.find().count_documents({}) == 2
+  assert Sample.collection.find().estimated_document_count() == 2
 
   db_object = Sample.collection.find_one({"_id": db_object["_id"]})
   assert "name" in db_object
@@ -202,6 +209,7 @@ def test_document_common_methods(Sample):
   # Should not add anything new
   assert Sample.collection.find().count() == 2
   assert Sample.collection.find().count_documents({}) == 2
+  assert Sample.collection.find().estimated_document_count() == 2
 
   db_object = Sample.collection.find_one({"_id": db_object["_id"]})
   assert "name" not in db_object
