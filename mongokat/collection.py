@@ -133,6 +133,9 @@ class Collection(object):
     def count(self, *args, **kwargs):
         return self._collection_with_options(kwargs).count(*args, **kwargs)
 
+    def count_documents(self, *args, **kwargs):
+        return self._collection_with_options(kwargs).count_documents(*args, **kwargs)
+
     def distinct(self, *args, **kwargs):
         return self._collection_with_options(kwargs).distinct(*args, **kwargs)
 
